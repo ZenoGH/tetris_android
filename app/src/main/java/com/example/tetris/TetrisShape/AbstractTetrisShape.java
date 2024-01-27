@@ -6,7 +6,7 @@ public abstract class AbstractTetrisShape {
     protected TetrisShapePiece tetrisShapePiece;
 
     AbstractTetrisShape() {
-        tetrisShapePiece = new TetrisShapePiece(null);
+        tetrisShapePiece = new TetrisShapePiece(0);
     }
 
     public void freeze() {

@@ -1,9 +1,9 @@
 package com.example.tetris.TetrisShape;
-import com.example.tetris.Color.Color;
+import android.graphics.Color;
 public class TetrisTShape extends AbstractTetrisShape {
     public TetrisTShape() {
         super();
-        tetrisShapePiece.setColor(Color.PURPLE);
+        tetrisShapePiece.setColor(Color.GREEN); //Purple
         shapeArray = new TetrisShapePiece[][] {
                 {tetrisShapePiece, tetrisShapePiece, tetrisShapePiece},
                 {null, tetrisShapePiece, null},

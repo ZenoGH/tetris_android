@@ -2,24 +2,27 @@ package com.example.tetris.Game;
 
 import static java.lang.Thread.sleep;
 
+import android.os.Handler;
+import android.view.View;
+import android.widget.GridView;
 import android.widget.TableLayout;
 
 import com.example.tetris.R;
 
 public class TetrisGame {
     private final Renderer renderer = new Renderer();
-    private final Field field = new Field(40, 10,this);
+    private final Field field = new Field(40, 10, this);
     private boolean isRunning = true;
     private int score = 0;
 
-    public TableLayout tableLayout;
+    public View renderView;
 
     private void tick() {
         field.tryToPlaceNewShape();
         field.processPhysics();
         field.checkLines();
         //renderer.consoleRender(field);
-        renderer.tableLayoutRender(field, tableLayout);
+        renderer.gridViewRender(field, (GridView) renderView);
     }
 
     protected void gameOver() {

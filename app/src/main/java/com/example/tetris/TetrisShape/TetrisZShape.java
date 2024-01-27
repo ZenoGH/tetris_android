@@ -1,5 +1,5 @@
 package com.example.tetris.TetrisShape;
-import com.example.tetris.Color.Color;
+import android.graphics.Color;
 public class TetrisZShape extends AbstractTetrisShape {
     public TetrisZShape() {
         super();

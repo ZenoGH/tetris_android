@@ -1,9 +1,9 @@
 package com.example.tetris.Game;
 
-import android.graphics.drawable.ColorDrawable;
-import android.widget.TableLayout;
+import android.app.Activity;
+import android.widget.GridView;
 
-import java.util.Objects;
+import com.example.tetris.Color.ColorAdapter;
 
 public class Renderer {
     void consoleRender(Field field) {
@@ -20,12 +20,35 @@ public class Renderer {
         }
     }
 
-    void tableLayoutRender(Field field, TableLayout tableLayout) {
+    void gridViewRender(Field field, GridView gridView) {
+        int[][] colorArray = getColorArray(field);
+        ((Activity) gridView.getContext()).runOnUiThread(() -> {
+            // Calculate the size of each grid cell
+            int cellSize = gridView.getWidth() / colorArray[0].length;
 
+            // Set the column width of the GridView to match the cell size
+            gridView.setColumnWidth(cellSize);
+            // Create an adapter to populate the GridView
+            ColorAdapter colorAdapter = new ColorAdapter(gridView.getContext(), colorArray, cellSize);
+
+            // Set the adapter for the GridView
+            gridView.setAdapter(colorAdapter);
+        });
     }
 
-    private ColorDrawable[][] getColorArray() {
-        ColorDrawable[][] newArray;
-        return null;
+
+    private int[][] getColorArray(Field field) {
+        int[][] newArray = new int[field.simulationField.length][field.simulationField[0].length];
+        for (int row = 0; row < field.simulationField.length; row++) {
+            for (int column = 0; column < field.simulationField[0].length; column++) {
+                if (field.simulationField[row][column] == null) {
+                    newArray[row][column] = 0;
+                } else {
+                    newArray[row][column] = field.simulationField[row][column].getColor();
+                }
+            }
+        }
+        return newArray;
     }
+
 }

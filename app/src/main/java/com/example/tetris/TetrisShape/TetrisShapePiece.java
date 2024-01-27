@@ -1,11 +1,12 @@
 package com.example.tetris.TetrisShape;
-import com.example.tetris.Color.Color;
+
+import android.graphics.Color;
 
 public class TetrisShapePiece {
 
-    private Color color;
+    private int color;
     private boolean frozen = false;
-    public TetrisShapePiece(Color color) {
+    public TetrisShapePiece(int color) {
         this.color = color;
     }
 
@@ -17,11 +18,11 @@ public class TetrisShapePiece {
         return frozen;
     }
 
-    public void setColor(Color color) {
+    public void setColor(int color) {
         this.color = color;
     }
 
-    public Color getColor() {
+    public int getColor() {
         return color;
     }
 }

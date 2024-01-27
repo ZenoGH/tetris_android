@@ -12,61 +12,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TableLayout
-            android:id="@+id/tetrisField"
+        <GridView
+            android:id="@+id/gridView"
             android:layout_width="match_parent"
-            android:layout_height="600dp">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </TableLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="<-" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="->" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="rotate" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="down" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:columnWidth="20dp"
+            android:horizontalSpacing="0dp"
+            android:numColumns="10"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="0dp" />
 
     </LinearLayout>
 
