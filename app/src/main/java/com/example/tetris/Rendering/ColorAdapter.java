@@ -1,4 +1,4 @@
-package com.example.tetris.Color;
+package com.example.tetris.Rendering;
 
 import android.content.Context;
 import android.view.View;
@@ -17,7 +17,7 @@ public class ColorAdapter extends BaseAdapter {
         this.context = context;
         this.colorArray = colorArray;
         this.cellSize = cellSize;
-        this.yOffset = 21; // Number of rows to hide at the top
+        this.yOffset = 8; // Number of rows to hide at the top
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ColorAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-
+        imageView.setEnabled(false);
         int visibleRow = position / colorArray[0].length;
         int row = visibleRow + yOffset;
         int col = position % colorArray[0].length;

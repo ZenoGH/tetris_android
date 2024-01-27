@@ -7,11 +7,13 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.widget.Button;
 
+import com.example.tetris.Game.Field;
+import com.example.tetris.Game.Input;
 import com.example.tetris.Game.TetrisGame;
 
 public class MainActivity extends AppCompatActivity {
-    private GestureDetector gestureDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,34 +22,30 @@ public class MainActivity extends AppCompatActivity {
         game.renderView = findViewById(R.id.gridView);
         Thread thread = new Thread(game::run);
         thread.start();
-        SwipeGestureListener swipeGestureListener = new SwipeGestureListener();
-        swipeGestureListener.setSwipeListener((SwipeGestureListener.SwipeListener) this);
-        gestureDetector = new GestureDetector(this, swipeGestureListener);
-    }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        gestureDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
+        Button leftButton = findViewById(R.id.leftButton);
+        Button rightButton = findViewById(R.id.rightButton);
+        Button rotateButton = findViewById(R.id.rotateButton);
+        Button downButton = findViewById(R.id.downButton);
 
+        leftButton.setOnClickListener((view)-> {
+            game.processInput(Input.Action.MOVE_LEFT);
+        });
+        rightButton.setOnClickListener((view)-> {
+            game.processInput(Input.Action.MOVE_RIGHT);
+        });
+        rotateButton.setOnClickListener((view)-> {
+            game.processInput(Input.Action.ROTATE);
+        });
+        downButton.setOnClickListener((view)-> {
+            game.processInput(Input.Action.MOVE_DOWN);
+        });
 
-    public void onSwipeUp() {
-
-    }
-
-
-    public void onSwipeDown() {
-        // Handle swipe down gesture
-    }
-
-
-    public void onSwipeLeft() {
-        // Handle swipe left gesture
-    }
-
-
-    public void onSwipeRight() {
-        // Handle swipe right gesture
+        //ISSUES:
+        //Doesn't render instantly when rotating piece
+        //Freezes piece almost as soon as it touches the floor
+        //Pieces flash in and out of existence
+        //Lines don't clear properly
+        //Code breaks SOLID and other shit too probably
     }
 }

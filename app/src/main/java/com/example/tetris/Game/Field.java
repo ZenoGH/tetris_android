@@ -5,7 +5,8 @@ import com.example.tetris.TetrisShape.TetrisShapeFactory;
 import com.example.tetris.TetrisShape.TetrisShapePiece;
 
 public class Field {
-    int size = 16;
+    int rows;
+    int columns;
     int centerColumn;
     public TetrisShapePiece[][] simulationField;
     public TetrisShapePiece[][] worldField;
@@ -16,7 +17,8 @@ public class Field {
     private TetrisGame game;
 
     public Field(int rows, int columns, TetrisGame game) {
-        this.size = rows;
+        this.rows = rows;
+        this.columns = columns;
         this.simulationField = new TetrisShapePiece[rows][columns];
         this.worldField = new TetrisShapePiece[rows][columns];
         this.centerColumn = columns / 2 - 1;
@@ -61,7 +63,7 @@ public class Field {
                 if (shapeArray[shapeRow][shapeColumn] == null) {
                     continue;
                 }
-                if (shapeRow + row >= size || shapeColumn + column >= size ||
+                if (column < 0 || shapeRow + row >= rows || shapeColumn + column >= columns ||
                         (simulationField[shapeRow + row][shapeColumn + column] != null &&
                                 !simulationField[shapeRow + row][shapeColumn + column]
                                         .equals(shape.getTetrisShapePiece()))) {
@@ -75,7 +77,7 @@ public class Field {
 
     public void checkLines() {
         int power = 1;
-        for (int row = size - 1; row >= 0; row--) {
+        for (int row = rows - 1; row >= 0; row--) {
             if (isLineComplete(row)) {
                 power *= 2;
                 clearLine(row);
@@ -85,8 +87,8 @@ public class Field {
     }
 
     public boolean isLineComplete(int line) {
-        for (int column = 0; column < size; column++) {
-            if (simulationField[line][column] == null) {
+        for (int column = 0; column < columns; column++) {
+            if (worldField[line][column] == null) {
                 return false;
             }
         }
@@ -94,11 +96,13 @@ public class Field {
     }
 
     public void clearLine(int line) {
-        for (int column = 0; column < size; column++) {
-            simulationField[line][column] = null;
+        for (int column = 0; column < columns; column++) {
+            worldField[line][column] = null;
         }
-        for (int row = line; row <= 1; row--) {
-            simulationField[row] = simulationField[row - 1];
+        for (int row = line; row <= 1; row++) {
+            for (int column = 0; column < columns; column++) {
+                worldField[row][column] = worldField[row - 1][column];
+            }
         }
     }
 
@@ -109,38 +113,45 @@ public class Field {
         doGravity();
     }
 
-    public void processInput(boolean rotate, int directionColumn) {
-        moveCurrentShapeSideways(directionColumn);
-        if (rotate) {
-            rotateCurrentShape();
+    protected void processInput(Input.Action action) {
+        if (currentShape == null) {
+            return;
         }
-        processPhysics();
+        switch (action) {
+            case MOVE_LEFT:
+                moveCurrentShapeSideways(-1);
+                break;
+            case MOVE_RIGHT:
+                moveCurrentShapeSideways(1);
+                break;
+            case ROTATE:
+                rotateCurrentShape();
+                break;
+            case MOVE_DOWN:
+                doGravity();
+                break;
+        }
     }
 
     private void doGravity() {
         simulationField = cloneField(worldField);
         if (placeShape(currentShape, targetFieldCenter[0], targetFieldCenter[1])) {
             targetFieldCenter[0]++;
-            if (!isAreaFree(currentShape, targetFieldCenter[0], targetFieldCenter[1])) {
-                currentShape.freeze();
-                currentShape = null;
-                worldField = cloneField(simulationField);
-            }
         } else {
-            game.gameOver();
+            targetFieldCenter[0]--; //TODO: improve code structure
+            placeShape(currentShape, targetFieldCenter[0], targetFieldCenter[1]);
+            currentShape.freeze();
+            currentShape = null;
+            worldField = cloneField(simulationField);
         }
+
     }
 
     private void moveCurrentShapeSideways(int direction) {
         targetFieldCenter[1] += direction;
         simulationField = cloneField(worldField);
-        if (placeShape(currentShape, targetFieldCenter[0], targetFieldCenter[1])) {
-            targetFieldCenter[0]++;
-            if (!isAreaFree(currentShape, targetFieldCenter[0], targetFieldCenter[1])) {
-                currentShape.freeze();
-                currentShape = null;
-                worldField = cloneField(simulationField);
-            }
+        if (!placeShape(currentShape, targetFieldCenter[0], targetFieldCenter[1])) {
+            targetFieldCenter[1] -= direction;
         }
 
     }
@@ -159,5 +170,13 @@ public class Field {
             newField[i] = field[i].clone();
         }
         return newField;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
     }
 }

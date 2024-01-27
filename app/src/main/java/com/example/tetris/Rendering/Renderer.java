@@ -1,15 +1,16 @@
-package com.example.tetris.Game;
+package com.example.tetris.Rendering;
 
 import android.app.Activity;
 import android.widget.GridView;
 
-import com.example.tetris.Color.ColorAdapter;
+import com.example.tetris.Game.Field;
+import com.example.tetris.Rendering.ColorAdapter;
 
 public class Renderer {
     void consoleRender(Field field) {
         System.out.println("======================");
-        for (int row = 0; row < field.size; row++) {
-            for (int column = 0; column < field.size; column++) {
+        for (int row = 0; row < field.getRows(); row++) {
+            for (int column = 0; column < field.getColumns(); column++) {
                 if (field.simulationField[row][column] != null) {
                     System.out.print("@");
                 } else {
@@ -20,7 +21,7 @@ public class Renderer {
         }
     }
 
-    void gridViewRender(Field field, GridView gridView) {
+    public void gridViewRender(Field field, GridView gridView) {
         int[][] colorArray = getColorArray(field);
         ((Activity) gridView.getContext()).runOnUiThread(() -> {
             // Calculate the size of each grid cell

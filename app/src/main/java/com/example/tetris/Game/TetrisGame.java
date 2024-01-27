@@ -2,16 +2,14 @@ package com.example.tetris.Game;
 
 import static java.lang.Thread.sleep;
 
-import android.os.Handler;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.TableLayout;
 
-import com.example.tetris.R;
+import com.example.tetris.Rendering.Renderer;
 
 public class TetrisGame {
     private final Renderer renderer = new Renderer();
-    private final Field field = new Field(40, 10, this);
+    private final Field field = new Field(25, 10, this);
     private boolean isRunning = true;
     private int score = 0;
 
@@ -46,5 +44,14 @@ public class TetrisGame {
 
     public int getScore() {
         return score;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public void processInput(Input.Action action) {
+        field.processInput(action);
+        renderer.gridViewRender(field, (GridView) renderView);
     }
 }

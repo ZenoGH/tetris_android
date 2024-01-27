@@ -18,13 +18,15 @@ public abstract class AbstractTetrisShape {
     }
 
     public void rotateShapeArrayClockwise() {
-        TetrisShapePiece[][] rotatedShapeArray = new TetrisShapePiece[shapeArray[0].length][shapeArray.length];
-        for (int row = 0; row < shapeArray.length; row++) {
-            for (int column = row; column < shapeArray[0].length; column++) {
-                rotatedShapeArray[row][column] = shapeArray[column][row];
+        int rowLength = shapeArray.length;
+        int columnLength = shapeArray[0].length;
+        TetrisShapePiece[][] rotatedArray = new TetrisShapePiece[columnLength][rowLength];
+        for (int row = 0; row < rowLength; row++) {
+            for (int column = 0; column < columnLength; column++) {
+                rotatedArray[column][rowLength - 1 - row] = shapeArray[row][column];
             }
         }
-        shapeArray = rotatedShapeArray;
+        shapeArray = rotatedArray;
     }
 
     public TetrisShapePiece[][] getShapeArray() {

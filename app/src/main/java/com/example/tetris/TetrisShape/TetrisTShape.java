@@ -6,7 +6,6 @@ public class TetrisTShape extends AbstractTetrisShape {
         tetrisShapePiece.setColor(Color.GREEN); //Purple
         shapeArray = new TetrisShapePiece[][] {
                 {tetrisShapePiece, tetrisShapePiece, tetrisShapePiece},
-                {null, tetrisShapePiece, null},
                 {null, tetrisShapePiece, null}
         };
     }
