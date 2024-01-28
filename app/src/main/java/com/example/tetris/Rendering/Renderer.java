@@ -4,24 +4,15 @@ import android.app.Activity;
 import android.widget.GridView;
 
 import com.example.tetris.Game.Field;
-import com.example.tetris.Rendering.ColorAdapter;
+
 
 public class Renderer {
-    void consoleRender(Field field) {
-        System.out.println("======================");
-        for (int row = 0; row < field.getRows(); row++) {
-            for (int column = 0; column < field.getColumns(); column++) {
-                if (field.simulationField[row][column] != null) {
-                    System.out.print("@");
-                } else {
-                    System.out.print("_");
-                }
-            }
-            System.out.println();
-        }
+    private GridView gridView;
+    public Renderer(GridView gridView) {
+        this.gridView = gridView;
     }
 
-    public void gridViewRender(Field field, GridView gridView) {
+    public void gridViewRender(Field field) {
         int[][] colorArray = getColorArray(field);
         ((Activity) gridView.getContext()).runOnUiThread(() -> {
             // Calculate the size of each grid cell
@@ -39,13 +30,13 @@ public class Renderer {
 
 
     private int[][] getColorArray(Field field) {
-        int[][] newArray = new int[field.simulationField.length][field.simulationField[0].length];
-        for (int row = 0; row < field.simulationField.length; row++) {
-            for (int column = 0; column < field.simulationField[0].length; column++) {
-                if (field.simulationField[row][column] == null) {
+        int[][] newArray = new int[field.renderedFieldArray.length][field.renderedFieldArray[0].length];
+        for (int row = 0; row < field.renderedFieldArray.length; row++) {
+            for (int column = 0; column < field.renderedFieldArray[0].length; column++) {
+                if (field.renderedFieldArray[row][column] == null) {
                     newArray[row][column] = 0;
                 } else {
-                    newArray[row][column] = field.simulationField[row][column].getColor();
+                    newArray[row][column] = field.renderedFieldArray[row][column].getColor();
                 }
             }
         }

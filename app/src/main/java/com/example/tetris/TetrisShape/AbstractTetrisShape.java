@@ -9,13 +9,6 @@ public abstract class AbstractTetrisShape {
         tetrisShapePiece = new TetrisShapePiece(0);
     }
 
-    public void freeze() {
-        tetrisShapePiece.freeze();
-    }
-
-    public boolean isFrozen() {
-        return tetrisShapePiece.isFrozen();
-    }
 
     public void rotateShapeArrayClockwise() {
         int rowLength = shapeArray.length;
@@ -35,9 +28,5 @@ public abstract class AbstractTetrisShape {
 
     public void setShapeArray(TetrisShapePiece[][] shapeArray) {
         this.shapeArray = shapeArray;
-    }
-
-    public TetrisShapePiece getTetrisShapePiece() {
-        return tetrisShapePiece;
     }
 }

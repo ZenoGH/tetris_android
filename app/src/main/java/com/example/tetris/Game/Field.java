@@ -8,36 +8,43 @@ public class Field {
     int rows;
     int columns;
     int centerColumn;
-    public TetrisShapePiece[][] simulationField;
-    public TetrisShapePiece[][] worldField;
+    public TetrisShapePiece[][] renderedFieldArray;
+    public TetrisShapePiece[][] simulationFieldArray;
     private final TetrisShapeFactory shapeFactory = new TetrisShapeFactory();
-    private int[] targetFieldCenter = new int[2];
+    private final int[] targetCoords = new int[2];
     private AbstractTetrisShape currentShape;
 
-    private TetrisGame game;
 
-    public Field(int rows, int columns, TetrisGame game) {
+    public Field(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.simulationField = new TetrisShapePiece[rows][columns];
-        this.worldField = new TetrisShapePiece[rows][columns];
+        this.renderedFieldArray = new TetrisShapePiece[rows][columns];
+        this.simulationFieldArray = new TetrisShapePiece[rows][columns];
         this.centerColumn = columns / 2 - 1;
-        this.game = game;
     }
 
     public void tryToPlaceNewShape() {
         if (currentShape == null) {
             currentShape = shapeFactory.createRandomShape();
-            targetFieldCenter[0] = 1;
-            targetFieldCenter[1] = centerColumn;
-            placeShape(currentShape, targetFieldCenter[0], targetFieldCenter[1]);
+            //currentShape = shapeFactory.createShape(TetrisShapeFactory.Type.iShape);
+            targetCoords[0] = 1;
+            targetCoords[1] = centerColumn;
+            tryToPlaceShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1]);
         }
     }
 
-    private boolean placeShape(AbstractTetrisShape shape, int row, int column) {
+    private boolean tryToPlaceShape(AbstractTetrisShape shape, TetrisShapePiece[][] fieldArray,
+                                 int row, int column) {
         if (!isAreaFree(shape, row, column)) {
             return false;
         }
+        else {
+            placeShape(shape, fieldArray, row, column);
+            return true;
+        }
+    }
+    private void placeShape(AbstractTetrisShape shape, TetrisShapePiece[][] fieldArray,
+                               int row, int column) {
         TetrisShapePiece[][] shapeArray = shape.getShapeArray();
         int rowLength = shapeArray.length - 1;
         int columnLength = shapeArray[0].length - 1;
@@ -47,10 +54,9 @@ public class Field {
                 if (shapeArray[shapeRow][shapeColumn] == null) {
                     continue;
                 }
-                simulationField[shapeRow + row][shapeColumn + column] = shapeArray[shapeRow][shapeColumn];
+                fieldArray[shapeRow + row][shapeColumn + column] = shapeArray[shapeRow][shapeColumn];
             }
         }
-        return true;
     }
 
     private boolean isAreaFree(AbstractTetrisShape shape, int row, int column) {
@@ -64,9 +70,7 @@ public class Field {
                     continue;
                 }
                 if (column < 0 || shapeRow + row >= rows || shapeColumn + column >= columns ||
-                        (simulationField[shapeRow + row][shapeColumn + column] != null &&
-                                !simulationField[shapeRow + row][shapeColumn + column]
-                                        .equals(shape.getTetrisShapePiece()))) {
+                        (simulationFieldArray[shapeRow + row][shapeColumn + column] != null)) {
                     return false;
                 }
             }
@@ -76,32 +80,36 @@ public class Field {
 
 
     public void checkLines() {
-        int power = 1;
+        //int scoreMultiplier = 1;
         for (int row = rows - 1; row >= 0; row--) {
             if (isLineComplete(row)) {
-                power *= 2;
+                //scoreMultiplier *= 2;
                 clearLine(row);
+                collapseLines(row);
             }
         }
-        game.increaseScore(100 * power);
+        //game.increaseScore(100 * scoreMultiplier);
     }
 
-    public boolean isLineComplete(int line) {
+    private boolean isLineComplete(int line) {
         for (int column = 0; column < columns; column++) {
-            if (worldField[line][column] == null) {
+            if (simulationFieldArray[line][column] == null) {
                 return false;
             }
         }
         return true;
     }
 
-    public void clearLine(int line) {
+    private void clearLine(int line) {
         for (int column = 0; column < columns; column++) {
-            worldField[line][column] = null;
+            simulationFieldArray[line][column] = null;
         }
-        for (int row = line; row <= 1; row++) {
+    }
+
+    public void collapseLines(int line) {
+        for (int row = line; row > 0; row--) {
             for (int column = 0; column < columns; column++) {
-                worldField[row][column] = worldField[row - 1][column];
+                simulationFieldArray[row][column] = simulationFieldArray[row - 1][column];
             }
         }
     }
@@ -113,7 +121,7 @@ public class Field {
         doGravity();
     }
 
-    protected void processInput(Input.Action action) {
+    protected void processAction(Input.Action action) {
         if (currentShape == null) {
             return;
         }
@@ -128,39 +136,50 @@ public class Field {
                 rotateCurrentShape();
                 break;
             case MOVE_DOWN:
-                doGravity();
+                dropCurrentShape();
                 break;
         }
     }
 
     private void doGravity() {
-        simulationField = cloneField(worldField);
-        if (placeShape(currentShape, targetFieldCenter[0], targetFieldCenter[1])) {
-            targetFieldCenter[0]++;
-        } else {
-            targetFieldCenter[0]--; //TODO: improve code structure
-            placeShape(currentShape, targetFieldCenter[0], targetFieldCenter[1]);
-            currentShape.freeze();
-            currentShape = null;
-            worldField = cloneField(simulationField);
+        if (isAreaFree(currentShape, targetCoords[0] + 1, targetCoords[1])) {
+            targetCoords[0]++; //lower target field
+            clearRenderedShape();
+            placeShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1]);
+        }
+        else {
+            placeShape(currentShape, simulationFieldArray, targetCoords[0], targetCoords[1]);
+            currentShape = null; // reset current shape
         }
 
     }
 
+    private void clearRenderedShape() {
+        renderedFieldArray = cloneField(simulationFieldArray);
+    }
     private void moveCurrentShapeSideways(int direction) {
-        targetFieldCenter[1] += direction;
-        simulationField = cloneField(worldField);
-        if (!placeShape(currentShape, targetFieldCenter[0], targetFieldCenter[1])) {
-            targetFieldCenter[1] -= direction;
+        if (isAreaFree(currentShape, targetCoords[0], targetCoords[1] + direction)) {
+            targetCoords[1] += direction;
+            clearRenderedShape();
+            placeShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1]);
         }
-
     }
 
     private void rotateCurrentShape() {
         TetrisShapePiece[][] oldShapeArray = currentShape.getShapeArray();
         currentShape.rotateShapeArrayClockwise();
-        if (!isAreaFree(currentShape, targetFieldCenter[0], targetFieldCenter[1])) {
+        if (isAreaFree(currentShape, targetCoords[0], targetCoords[1])) {
+            clearRenderedShape();
+            placeShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1]);
+        }
+        else {
             currentShape.setShapeArray(oldShapeArray);
+        }
+    }
+
+    private void dropCurrentShape() {
+        while (currentShape != null) {
+            doGravity();
         }
     }
 

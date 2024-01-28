@@ -17,7 +17,7 @@ public class ColorAdapter extends BaseAdapter {
         this.context = context;
         this.colorArray = colorArray;
         this.cellSize = cellSize;
-        this.yOffset = 8; // Number of rows to hide at the top
+        this.yOffset = colorArray[0].length / 2; // Number of rows to hide at the top
     }
 
     @Override

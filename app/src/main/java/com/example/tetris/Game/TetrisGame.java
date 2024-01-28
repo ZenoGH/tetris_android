@@ -2,25 +2,25 @@ package com.example.tetris.Game;
 
 import static java.lang.Thread.sleep;
 
-import android.view.View;
-import android.widget.GridView;
-
 import com.example.tetris.Rendering.Renderer;
 
 public class TetrisGame {
-    private final Renderer renderer = new Renderer();
-    private final Field field = new Field(25, 10, this);
+    private Renderer renderer;
+    private ScoreSystem scoreSystem;
+    private Field field;
     private boolean isRunning = true;
-    private int score = 0;
 
-    public View renderView;
-
+    public TetrisGame(Renderer renderer, ScoreSystem score) {
+        this.renderer = renderer;
+        this.scoreSystem = score;
+        this.field = new Field(25, 10);
+    }
     private void tick() {
         field.tryToPlaceNewShape();
         field.processPhysics();
         field.checkLines();
         //renderer.consoleRender(field);
-        renderer.gridViewRender(field, (GridView) renderView);
+        renderer.gridViewRender(field);
     }
 
     protected void gameOver() {
@@ -38,20 +38,8 @@ public class TetrisGame {
         }
     }
 
-    protected void increaseScore(int score) {
-        this.score += score;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public Field getField() {
-        return field;
-    }
-
     public void processInput(Input.Action action) {
-        field.processInput(action);
-        renderer.gridViewRender(field, (GridView) renderView);
+        field.processAction(action);
+        renderer.gridViewRender(field);
     }
 }
