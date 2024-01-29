@@ -11,25 +11,24 @@ public class ColorAdapter extends BaseAdapter {
     private Context context;
     private int[][] colorArray;
     private int cellSize;
-    private int yOffset;
+
 
     public ColorAdapter(Context context, int[][] colorArray, int cellSize) {
         this.context = context;
         this.colorArray = colorArray;
         this.cellSize = cellSize;
-        this.yOffset = colorArray[0].length / 2; // Number of rows to hide at the top
     }
 
     @Override
     public int getCount() {
-        return (colorArray.length - yOffset) * colorArray[0].length;
+        return colorArray.length * colorArray[0].length;
     }
 
     @Override
     public Object getItem(int position) {
-        int visibleRow = (position / colorArray[0].length) + yOffset;
-        int col = position % colorArray[0].length;
-        return colorArray[visibleRow][col];
+        int row = position % colorArray.length;
+        int column = position % colorArray[0].length;
+        return colorArray[row][column];
     }
 
     @Override
@@ -49,11 +48,10 @@ public class ColorAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
         imageView.setEnabled(false);
-        int visibleRow = position / colorArray[0].length;
-        int row = visibleRow + yOffset;
-        int col = position % colorArray[0].length;
+        int row = position / colorArray[0].length;
+        int column = position % colorArray[0].length;
 
-        int color = colorArray[row][col];
+        int color = colorArray[row][column];
         imageView.setBackgroundColor(color);
 
         return imageView;

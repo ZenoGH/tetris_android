@@ -1,7 +1,5 @@
 package com.example.tetris.TetrisShape;
 
-import android.graphics.Color;
-
 public class TetrisShapePiece {
 
     private int color;

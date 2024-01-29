@@ -7,6 +7,37 @@
     android:background="@android:color/black"
     tools:context=".MainActivity" >
 
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="2000dp"
+        android:clickable="false"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:columnWidth="20dp"
+        android:horizontalSpacing="0dp"
+        android:numColumns="10"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </GridView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/scoreTextView"
         android:layout_width="wrap_content"
@@ -21,57 +52,42 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
-        <GridView
-            android:id="@+id/gridView"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/leftButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:columnWidth="20dp"
-            android:horizontalSpacing="0dp"
-            android:numColumns="10"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="0dp">
+            android:layout_weight="1"
+            android:text="LEFT" />
 
-        </GridView>
+        <Button
+            android:id="@+id/rightButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RIGHT" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <Button
+            android:id="@+id/rotateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ROTATE" />
 
-            <Button
-                android:id="@+id/leftButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="LEFT" />
-
-            <Button
-                android:id="@+id/rightButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="RIGHT" />
-
-            <Button
-                android:id="@+id/rotateButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ROTATE" />
-
-            <Button
-                android:id="@+id/downButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="DOWN" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/downButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="DOWN" />
 
     </LinearLayout>
 

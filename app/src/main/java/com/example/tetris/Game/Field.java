@@ -8,6 +8,8 @@ public class Field {
     int rows;
     int columns;
     int centerColumn;
+    private ScoreSystem scoreSystem;
+    private TetrisGame game;
     public TetrisShapePiece[][] renderedFieldArray;
     public TetrisShapePiece[][] simulationFieldArray;
     private final TetrisShapeFactory shapeFactory = new TetrisShapeFactory();
@@ -15,9 +17,11 @@ public class Field {
     private AbstractTetrisShape currentShape;
 
 
-    public Field(int rows, int columns) {
+    public Field(int rows, int columns, TetrisGame game) {
         this.rows = rows;
         this.columns = columns;
+        this.game = game;
+        this.scoreSystem = game.getScoreSystem();
         this.renderedFieldArray = new TetrisShapePiece[rows][columns];
         this.simulationFieldArray = new TetrisShapePiece[rows][columns];
         this.centerColumn = columns / 2 - 1;
@@ -29,7 +33,9 @@ public class Field {
             //currentShape = shapeFactory.createShape(TetrisShapeFactory.Type.iShape);
             targetCoords[0] = 1;
             targetCoords[1] = centerColumn;
-            tryToPlaceShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1]);
+            if (!tryToPlaceShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1])) {
+                game.gameOver();
+            }
         }
     }
 
@@ -80,15 +86,15 @@ public class Field {
 
 
     public void checkLines() {
-        //int scoreMultiplier = 1;
+        int scoreMultiplier = 1;
         for (int row = rows - 1; row >= 0; row--) {
             if (isLineComplete(row)) {
-                //scoreMultiplier *= 2;
+                scoreMultiplier *= 2;
+                scoreSystem.increaseScore(100 * scoreMultiplier);
                 clearLine(row);
                 collapseLines(row);
             }
         }
-        //game.increaseScore(100 * scoreMultiplier);
     }
 
     private boolean isLineComplete(int line) {

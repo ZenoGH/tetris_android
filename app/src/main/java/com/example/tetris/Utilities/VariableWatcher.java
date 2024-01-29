@@ -1,4 +1,4 @@
-package com.example.tetris;
+package com.example.tetris.Utilities;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -15,13 +15,10 @@ public class VariableWatcher {
     }
 
     private void startWatching() {
-        PropertyChangeListener listener = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent event) {
-                if (event.getPropertyName().equals(variableName)) {
-                    Object newValue = event.getNewValue();
-                    System.out.println("New value detected: " + newValue);
-                }
+        PropertyChangeListener listener = event -> {
+            if (event.getPropertyName().equals(variableName)) {
+                Object newValue = event.getNewValue();
+                System.out.println("New value detected: " + newValue);
             }
         };
         ((java.beans.PropertyChangeSupport) monitoredObject)

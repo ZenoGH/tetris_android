@@ -6,14 +6,13 @@ import com.example.tetris.Rendering.Renderer;
 
 public class TetrisGame {
     private Renderer renderer;
-    private ScoreSystem scoreSystem;
     private Field field;
-    private boolean isRunning = true;
+    private ScoreSystem scoreSystem;
+    private boolean isRunning;
 
-    public TetrisGame(Renderer renderer, ScoreSystem score) {
+    public TetrisGame(Renderer renderer, ScoreSystem scoreSystem) {
+        this.scoreSystem = scoreSystem;
         this.renderer = renderer;
-        this.scoreSystem = score;
-        this.field = new Field(25, 10);
     }
     private void tick() {
         field.tryToPlaceNewShape();
@@ -28,6 +27,8 @@ public class TetrisGame {
     }
 
     public void run() {
+        this.field = new Field(25, 10, this);
+        isRunning = true;
         while (isRunning) {
             try {
                 sleep(500);
@@ -36,10 +37,16 @@ public class TetrisGame {
             }
             tick();
         }
+        scoreSystem.resetScore();
+        //scoreSystem.highlightScore();
     }
 
     public void processInput(Input.Action action) {
         field.processAction(action);
         renderer.gridViewRender(field);
+    }
+
+    public ScoreSystem getScoreSystem() {
+        return scoreSystem;
     }
 }
