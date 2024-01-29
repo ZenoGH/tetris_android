@@ -1,25 +1,39 @@
 package com.example.tetris.Game;
 
 import static java.lang.Thread.sleep;
+import static java.security.AccessController.getContext;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 
 import com.example.tetris.Rendering.Renderer;
+import com.example.tetris.TetrisShape.TetrisShapePiece;
 
 public class TetrisGame {
-    private Renderer renderer;
+    private Renderer FieldRenderer;
+    private Renderer nextShapeRenderer;
     private Field field;
     private ScoreSystem scoreSystem;
     private boolean isRunning;
 
-    public TetrisGame(Renderer renderer, ScoreSystem scoreSystem) {
+    private final int TickDelayMs = 500;
+    private final int fieldHeight = 25;
+    private final int fieldWidth = 10;
+
+    public TetrisGame(Renderer fieldRenderer, Renderer nextShapeRenderer, ScoreSystem scoreSystem) {
         this.scoreSystem = scoreSystem;
-        this.renderer = renderer;
+        this.FieldRenderer = fieldRenderer;
+        this.nextShapeRenderer = nextShapeRenderer;
     }
+
     private void tick() {
         field.tryToPlaceNewShape();
         field.processPhysics();
         field.checkLines();
         //renderer.consoleRender(field);
-        renderer.gridViewRender(field);
+        renderGameField();
+        renderNextShape();
     }
 
     protected void gameOver() {
@@ -27,11 +41,11 @@ public class TetrisGame {
     }
 
     public void run() {
-        this.field = new Field(25, 10, this);
+        this.field = new Field(fieldHeight, fieldWidth, this);
         isRunning = true;
         while (isRunning) {
             try {
-                sleep(500);
+                sleep(TickDelayMs);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -43,10 +57,39 @@ public class TetrisGame {
 
     public void processInput(Input.Action action) {
         field.processAction(action);
-        renderer.gridViewRender(field);
+        renderGameField();
     }
 
     public ScoreSystem getScoreSystem() {
         return scoreSystem;
+    }
+
+    private void renderGameField() {
+        TetrisShapePiece[][] newArray =
+                cutOffRows(field.getRenderedFieldArray(), fieldHeight / 5);
+        FieldRenderer.renderTetrisPieceArray(newArray,
+                (float) getScreenWidth() / newArray[0].length * 0.7f);
+    }
+
+    private void renderNextShape() {
+        TetrisShapePiece[][] newArray = field.getNextShape().getShapeArray();
+        nextShapeRenderer.renderTetrisPieceArray(newArray,
+                dpToPx(nextShapeRenderer.getView().getContext(), 30));
+    }
+
+    public static TetrisShapePiece[][] cutOffRows(TetrisShapePiece[][] array, int n) {
+        int newRowSize = array.length - n;
+        TetrisShapePiece[][] newArray = new TetrisShapePiece[newRowSize][array[0].length];
+        if (array.length - n >= 0) System.arraycopy(array, n, newArray, 0, array.length - n);
+        return newArray;
+    }
+
+    private int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    private int dpToPx(Context context, int dp) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 }

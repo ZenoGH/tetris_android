@@ -14,6 +14,7 @@ public class Field {
     public TetrisShapePiece[][] simulationFieldArray;
     private final TetrisShapeFactory shapeFactory = new TetrisShapeFactory();
     private final int[] targetCoords = new int[2];
+    private AbstractTetrisShape nextShape;
     private AbstractTetrisShape currentShape;
 
 
@@ -25,13 +26,15 @@ public class Field {
         this.renderedFieldArray = new TetrisShapePiece[rows][columns];
         this.simulationFieldArray = new TetrisShapePiece[rows][columns];
         this.centerColumn = columns / 2 - 1;
+        nextShape = shapeFactory.createRandomShape();
     }
 
     public void tryToPlaceNewShape() {
         if (currentShape == null) {
-            currentShape = shapeFactory.createRandomShape();
+            currentShape = nextShape;
+            nextShape = shapeFactory.createRandomShape();
             //currentShape = shapeFactory.createShape(TetrisShapeFactory.Type.iShape);
-            targetCoords[0] = 1;
+            targetCoords[0] = 0;
             targetCoords[1] = centerColumn;
             if (!tryToPlaceShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1])) {
                 game.gameOver();
@@ -40,17 +43,17 @@ public class Field {
     }
 
     private boolean tryToPlaceShape(AbstractTetrisShape shape, TetrisShapePiece[][] fieldArray,
-                                 int row, int column) {
+                                    int row, int column) {
         if (!isAreaFree(shape, row, column)) {
             return false;
-        }
-        else {
+        } else {
             placeShape(shape, fieldArray, row, column);
             return true;
         }
     }
+
     private void placeShape(AbstractTetrisShape shape, TetrisShapePiece[][] fieldArray,
-                               int row, int column) {
+                            int row, int column) {
         TetrisShapePiece[][] shapeArray = shape.getShapeArray();
         int rowLength = shapeArray.length - 1;
         int columnLength = shapeArray[0].length - 1;
@@ -152,8 +155,7 @@ public class Field {
             targetCoords[0]++; //lower target field
             clearRenderedShape();
             placeShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1]);
-        }
-        else {
+        } else {
             placeShape(currentShape, simulationFieldArray, targetCoords[0], targetCoords[1]);
             currentShape = null; // reset current shape
         }
@@ -163,6 +165,7 @@ public class Field {
     private void clearRenderedShape() {
         renderedFieldArray = cloneField(simulationFieldArray);
     }
+
     private void moveCurrentShapeSideways(int direction) {
         if (isAreaFree(currentShape, targetCoords[0], targetCoords[1] + direction)) {
             targetCoords[1] += direction;
@@ -177,8 +180,7 @@ public class Field {
         if (isAreaFree(currentShape, targetCoords[0], targetCoords[1])) {
             clearRenderedShape();
             placeShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1]);
-        }
-        else {
+        } else {
             currentShape.setShapeArray(oldShapeArray);
         }
     }
@@ -197,11 +199,11 @@ public class Field {
         return newField;
     }
 
-    public int getRows() {
-        return rows;
+    public TetrisShapePiece[][] getRenderedFieldArray() {
+        return renderedFieldArray;
     }
 
-    public int getColumns() {
-        return columns;
+    public AbstractTetrisShape getNextShape() {
+        return nextShape;
     }
 }

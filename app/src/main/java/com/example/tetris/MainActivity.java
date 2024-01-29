@@ -3,10 +3,7 @@ package com.example.tetris;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
 
 import com.example.tetris.Game.Input;
 import com.example.tetris.Game.ScoreSystem;
@@ -18,14 +15,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GridView gridView = findViewById(R.id.gridView);
-        Renderer renderer = new Renderer(gridView);
-        gridView.setVerticalScrollBarEnabled(false);
-        gridView.setOnTouchListener((View view, MotionEvent motionEvent) -> {
-                return true;
-        });
+//        GridView gridView = findViewById(R.id.gridView);
+//        Renderer renderer = new Renderer(gridView);
+//        gridView.setVerticalScrollBarEnabled(false);
+//        gridView.setOnTouchListener((View view, MotionEvent motionEvent) -> {
+//                return true;
+//        });
+
+//        TableLayout tableLayout = findViewById(R.id.tableLayout);
+//        Renderer renderer = new Renderer(tableLayout);
+        Renderer fieldRenderer = new Renderer(findViewById(R.id.tetrisLayout));
+        Renderer nextShapeRenderer = new Renderer(findViewById(R.id.tetrisLayout));
         ScoreSystem scoreSystem = new ScoreSystem(findViewById(R.id.scoreTextView));
-        TetrisGame game = new TetrisGame(renderer, scoreSystem);
+        TetrisGame game = new TetrisGame(fieldRenderer, nextShapeRenderer, scoreSystem);
         Thread thread = new Thread(() -> {
             while (true) {
                 game.run();
@@ -44,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         downButton.setOnClickListener((view)-> game.processInput(Input.Action.MOVE_DOWN));
 
         //ISSUES:
-        //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        //game over doesn't restart game
+        //game resolution not consistent across devices
     }
 }
