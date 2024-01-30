@@ -2,7 +2,6 @@ package com.example.tetris.Rendering;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ public class Renderer {
         context = view.getContext();
     }
 
-    private void prepareRenderer() {
+    private void prepareColorArrayView() {
         colorArrayView = new ColorArrayView(context);
         ((Activity) context).runOnUiThread(() -> {
             ((ViewGroup) view).addView(colorArrayView);
@@ -27,7 +26,7 @@ public class Renderer {
     }
     public void renderTetrisPieceArray(TetrisShapePiece[][] pieceArray, float cellSize) {
         if (colorArrayView == null) {
-            prepareRenderer();
+            prepareColorArrayView();
         }
         int[][] colorArray = convertToColorArray(pieceArray);
         ((Activity) context).runOnUiThread(() -> {

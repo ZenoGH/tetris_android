@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 //        TableLayout tableLayout = findViewById(R.id.tableLayout);
 //        Renderer renderer = new Renderer(tableLayout);
         Renderer fieldRenderer = new Renderer(findViewById(R.id.tetrisLayout));
-        Renderer nextShapeRenderer = new Renderer(findViewById(R.id.tetrisLayout));
+        Renderer nextShapeRenderer = new Renderer(findViewById(R.id.nextShapeLayout));
         ScoreSystem scoreSystem = new ScoreSystem(findViewById(R.id.scoreTextView));
         TetrisGame game = new TetrisGame(fieldRenderer, nextShapeRenderer, scoreSystem);
         Thread thread = new Thread(() -> {

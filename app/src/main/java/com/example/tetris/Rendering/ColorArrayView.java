@@ -33,23 +33,13 @@ public class ColorArrayView extends View {
         }
         super.onDraw(canvas);
 
-        int viewWidth = getWidth();
-        int viewHeight = getHeight();
-        float contentWidth = cellSize * colorArray[0].length;
-        float contentHeight = cellSize * colorArray.length;
-        //ViewGroup parent = (ViewGroup) getParent();
-        int parentLeft = ((View) getParent()).getLeft();
-        int parentTop = ((View) getParent()).getTop();
-        float translationX = parentLeft;
-        float translationY = parentTop;
-
 
         for (int i = 0; i < colorArray.length; i++) {
             for (int j = 0; j < colorArray[i].length; j++) {
                 int color = colorArray[i][j];
                 cellPaint.setColor(color);
-                float left = j * cellSize + translationX;
-                float top = i * cellSize + translationY;
+                float left = j * (cellSize + 1);
+                float top = i * (cellSize + 1);
                 float right = left + cellSize;
                 float bottom = top + cellSize;
                 canvas.drawRect(left, top, right, bottom, cellPaint);
