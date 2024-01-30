@@ -4,12 +4,15 @@ import java.util.Random;
 
 public class TetrisShapeFactory {
     private static final Random RNG = new Random();
+
     public enum Type {
         lShape,
         oShape,
         iShape,
         tShape,
-        zShape
+        zShape,
+        sShape,
+        jShape,
     }
 
     public AbstractTetrisShape createShape(Type type) {
@@ -24,7 +27,11 @@ public class TetrisShapeFactory {
                 return new TetrisTShape();
             case zShape:
                 return new TetrisZShape();
-        };
+            case jShape:
+                return new TetrisJShape();
+            case sShape:
+                return new TetrisSShape();
+        }
         return null;
     }
 
