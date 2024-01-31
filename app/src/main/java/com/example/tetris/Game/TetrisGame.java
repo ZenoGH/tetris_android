@@ -1,12 +1,12 @@
 package com.example.tetris.Game;
 
 import static java.lang.Thread.sleep;
-import static java.security.AccessController.getContext;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
+import com.example.tetris.Gestures.SimpleGestureListener;
 import com.example.tetris.Rendering.Renderer;
 import com.example.tetris.TetrisShape.TetrisShapePiece;
 
@@ -55,7 +55,7 @@ public class TetrisGame {
         //scoreSystem.highlightScore();
     }
 
-    public void processInput(Input.Action action) {
+    public void processInput(SimpleGestureListener.Direction action) {
         field.processAction(action);
         renderGameField();
     }

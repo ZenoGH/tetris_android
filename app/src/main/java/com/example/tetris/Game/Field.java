@@ -1,5 +1,6 @@
 package com.example.tetris.Game;
 
+import com.example.tetris.Gestures.SimpleGestureListener;
 import com.example.tetris.TetrisShape.AbstractTetrisShape;
 import com.example.tetris.TetrisShape.TetrisShapeFactory;
 import com.example.tetris.TetrisShape.TetrisShapePiece;
@@ -130,21 +131,21 @@ public class Field {
         doGravity();
     }
 
-    protected void processAction(Input.Action action) {
+    protected void processAction(SimpleGestureListener.Direction direction) {
         if (currentShape == null) {
             return;
         }
-        switch (action) {
-            case MOVE_LEFT:
+        switch (direction) {
+            case LEFT:
                 moveCurrentShapeSideways(-1);
                 break;
-            case MOVE_RIGHT:
+            case RIGHT:
                 moveCurrentShapeSideways(1);
                 break;
-            case ROTATE:
+            case UP:
                 rotateCurrentShape();
                 break;
-            case MOVE_DOWN:
+            case DOWN:
                 dropCurrentShape();
                 break;
         }

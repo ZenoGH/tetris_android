@@ -7,9 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.Button;
 
-import com.example.tetris.Game.Input;
 import com.example.tetris.Game.ScoreSystem;
 import com.example.tetris.Game.TetrisGame;
 import com.example.tetris.Gestures.SimpleGestureListener;
@@ -37,22 +35,22 @@ public class MainActivity extends AppCompatActivity {
         SimpleGestureListener gestureListener = new SimpleGestureListener() {
             @Override
             public void onSwipeUp() {
-                game.processInput(Input.Action.ROTATE);
+                game.processInput(Direction.UP);
             }
 
             @Override
             public void onSwipeDown() {
-                game.processInput(Input.Action.MOVE_DOWN);
+                game.processInput(Direction.DOWN);
             }
 
             @Override
             public void onSwipeLeft() {
-                game.processInput(Input.Action.MOVE_LEFT);
+                game.processInput(Direction.LEFT);
             }
 
             @Override
             public void onSwipeRight() {
-                game.processInput(Input.Action.MOVE_RIGHT);
+                game.processInput(Direction.RIGHT);
             }
         };
 

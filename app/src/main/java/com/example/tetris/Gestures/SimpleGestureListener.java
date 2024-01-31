@@ -7,6 +7,9 @@ public class SimpleGestureListener extends GestureDetector.SimpleOnGestureListen
     private static final int SWIPE_THRESHOLD = 100;
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
+    public enum Direction {
+        LEFT, RIGHT, UP, DOWN
+    }
     @Override
     public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
         boolean result = false;
@@ -36,7 +39,6 @@ public class SimpleGestureListener extends GestureDetector.SimpleOnGestureListen
     }
 
     public void onSwipeUp() {
-        // To be implemented by the calling class
     }
 
     public void onSwipeDown() {
