@@ -1,29 +1,27 @@
 package com.example.tetris;
 
+import static java.lang.Math.abs;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.widget.Button;
 
 import com.example.tetris.Game.Input;
 import com.example.tetris.Game.ScoreSystem;
 import com.example.tetris.Game.TetrisGame;
+import com.example.tetris.Gestures.SimpleGestureListener;
 import com.example.tetris.Rendering.Renderer;
 
 public class MainActivity extends AppCompatActivity {
+    private GestureDetector gestureDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        GridView gridView = findViewById(R.id.gridView);
-//        Renderer renderer = new Renderer(gridView);
-//        gridView.setVerticalScrollBarEnabled(false);
-//        gridView.setOnTouchListener((View view, MotionEvent motionEvent) -> {
-//                return true;
-//        });
 
-//        TableLayout tableLayout = findViewById(R.id.tableLayout);
-//        Renderer renderer = new Renderer(tableLayout);
         Renderer fieldRenderer = new Renderer(findViewById(R.id.tetrisLayout));
         Renderer nextShapeRenderer = new Renderer(findViewById(R.id.nextShapeLayout));
         ScoreSystem scoreSystem = new ScoreSystem(findViewById(R.id.scoreTextView));
@@ -35,17 +33,35 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();
 
-        Button leftButton = findViewById(R.id.leftButton);
-        Button rightButton = findViewById(R.id.rightButton);
-        Button rotateButton = findViewById(R.id.rotateButton);
-        Button downButton = findViewById(R.id.downButton);
 
-        leftButton.setOnClickListener((view)-> game.processInput(Input.Action.MOVE_LEFT));
-        rightButton.setOnClickListener((view)-> game.processInput(Input.Action.MOVE_RIGHT));
-        rotateButton.setOnClickListener((view)-> game.processInput(Input.Action.ROTATE));
-        downButton.setOnClickListener((view)-> game.processInput(Input.Action.MOVE_DOWN));
+        SimpleGestureListener gestureListener = new SimpleGestureListener() {
+            @Override
+            public void onSwipeUp() {
+                game.processInput(Input.Action.ROTATE);
+            }
 
-        //ISSUES:
-        //game resolution not consistent across devices
+            @Override
+            public void onSwipeDown() {
+                game.processInput(Input.Action.MOVE_DOWN);
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                game.processInput(Input.Action.MOVE_LEFT);
+            }
+
+            @Override
+            public void onSwipeRight() {
+                game.processInput(Input.Action.MOVE_RIGHT);
+            }
+        };
+
+        gestureDetector = new GestureDetector(this, gestureListener);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
     }
 }
+
