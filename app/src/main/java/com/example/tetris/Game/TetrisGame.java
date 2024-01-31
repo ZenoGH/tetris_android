@@ -31,7 +31,6 @@ public class TetrisGame {
         field.tryToPlaceNewShape();
         field.processPhysics();
         field.checkLines();
-        //renderer.consoleRender(field);
         renderGameField();
         renderNextShape();
     }

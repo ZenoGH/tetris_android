@@ -4,8 +4,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 public class SimpleGestureListener extends GestureDetector.SimpleOnGestureListener {
-    private static final int SWIPE_THRESHOLD = 100;
-    private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+    private static final int swipeThreshold = 100;
+    private static final int swipeVelocityThreshold = 100;
 
     public enum Direction {
         LEFT, RIGHT, UP, DOWN
@@ -16,7 +16,7 @@ public class SimpleGestureListener extends GestureDetector.SimpleOnGestureListen
         float diffX = event2.getX() - event1.getX();
         float diffY = event2.getY() - event1.getY();
         if (Math.abs(diffX) > Math.abs(diffY)) {
-            if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+            if (Math.abs(diffX) > swipeThreshold && Math.abs(velocityX) > swipeVelocityThreshold) {
                 if (diffX > 0) {
                     onSwipeRight();
                 } else {
@@ -25,7 +25,7 @@ public class SimpleGestureListener extends GestureDetector.SimpleOnGestureListen
                 result = true;
             }
         } else {
-            if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+            if (Math.abs(diffY) > swipeThreshold && Math.abs(velocityY) > swipeVelocityThreshold) {
                 if (diffY > 0) {
                     onSwipeDown();
                 } else {
