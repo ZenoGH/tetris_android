@@ -11,7 +11,11 @@ public class SimpleGestureListener extends GestureDetector.SimpleOnGestureListen
         LEFT, RIGHT, UP, DOWN
     }
     @Override
-    public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
+    public boolean onFling(
+            MotionEvent event1,
+            MotionEvent event2,
+            float velocityX,
+            float velocityY) {
         boolean result = false;
         float diffX = event2.getX() - event1.getX();
         float diffY = event2.getY() - event1.getY();

@@ -38,6 +38,7 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0"
                     android:text="NEXT:"
                     android:textColor="#FFFFFF" />
 
@@ -45,6 +46,7 @@
                     android:id="@+id/nextShapeLayout"
                     android:layout_width="100dp"
                     android:layout_height="150dp"
+                    android:layout_weight="0"
                     android:gravity="center">
 
                 </RelativeLayout>
@@ -52,63 +54,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <Button
-                android:id="@+id/leftButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="LEFT" />
-
-            <Button
-                android:id="@+id/rightButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="RIGHT" />
-
-            <Button
-                android:id="@+id/rotateButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ROTATE" />
-
-            <Button
-                android:id="@+id/downButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="DOWN" />
-
-        </LinearLayout>
     </LinearLayout>
-
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="match_parent"
-        android:layout_height="2000dp"
-        android:clickable="false"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:columnWidth="20dp"
-        android:horizontalSpacing="0dp"
-        android:numColumns="10"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="0dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </GridView>
 
     <TextView
         android:id="@+id/scoreTextView"
@@ -119,8 +65,9 @@
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

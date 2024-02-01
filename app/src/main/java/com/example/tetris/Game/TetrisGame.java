@@ -21,7 +21,9 @@ public class TetrisGame {
     private final int fieldHeight = 25;
     private final int fieldWidth = 10;
 
-    public TetrisGame(Renderer fieldRenderer, Renderer nextShapeRenderer, ScoreSystem scoreSystem) {
+    public TetrisGame(Renderer fieldRenderer,
+                      Renderer nextShapeRenderer,
+                      ScoreSystem scoreSystem) {
         this.scoreSystem = scoreSystem;
         this.FieldRenderer = fieldRenderer;
         this.nextShapeRenderer = nextShapeRenderer;
@@ -51,7 +53,6 @@ public class TetrisGame {
             tick();
         }
         scoreSystem.resetScore();
-        //scoreSystem.highlightScore();
     }
 
     public void processInput(SimpleGestureListener.Direction action) {
@@ -79,7 +80,9 @@ public class TetrisGame {
     public static TetrisShapePiece[][] cutOffRows(TetrisShapePiece[][] array, int n) {
         int newRowSize = array.length - n;
         TetrisShapePiece[][] newArray = new TetrisShapePiece[newRowSize][array[0].length];
-        if (array.length - n >= 0) System.arraycopy(array, n, newArray, 0, array.length - n);
+        if (array.length - n >= 0) {
+            System.arraycopy(array, n, newArray, 0, array.length - n);
+        }
         return newArray;
     }
 

@@ -37,14 +37,21 @@ public class Field {
             //currentShape = shapeFactory.createShape(TetrisShapeFactory.Type.iShape);
             targetCoords[0] = 0;
             targetCoords[1] = centerColumn;
-            if (!tryToPlaceShape(currentShape, renderedFieldArray, targetCoords[0], targetCoords[1])) {
+            if (!tryToPlaceShape(
+                    currentShape,
+                    renderedFieldArray,
+                    targetCoords[0],
+                    targetCoords[1])) {
                 game.gameOver();
             }
         }
     }
 
-    private boolean tryToPlaceShape(AbstractTetrisShape shape, TetrisShapePiece[][] fieldArray,
-                                    int row, int column) {
+    private boolean tryToPlaceShape(
+            AbstractTetrisShape shape,
+            TetrisShapePiece[][] fieldArray,
+            int row,
+            int column) {
         if (!isAreaFree(shape, row, column)) {
             return false;
         } else {
@@ -53,8 +60,11 @@ public class Field {
         }
     }
 
-    private void placeShape(AbstractTetrisShape shape, TetrisShapePiece[][] fieldArray,
-                            int row, int column) {
+    private void placeShape(
+            AbstractTetrisShape shape,
+            TetrisShapePiece[][] fieldArray,
+            int row,
+            int column) {
         TetrisShapePiece[][] shapeArray = shape.getShapeArray();
         int rowLength = shapeArray.length - 1;
         int columnLength = shapeArray[0].length - 1;
@@ -64,7 +74,8 @@ public class Field {
                 if (shapeArray[shapeRow][shapeColumn] == null) {
                     continue;
                 }
-                fieldArray[shapeRow + row][shapeColumn + column] = shapeArray[shapeRow][shapeColumn];
+                fieldArray[shapeRow + row][shapeColumn + column] =
+                        shapeArray[shapeRow][shapeColumn];
             }
         }
     }

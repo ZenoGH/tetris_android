@@ -1,26 +1,33 @@
 package com.example.tetris.Game;
 
-import static java.lang.Thread.sleep;
-
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.TextView;
 
 public class ScoreSystem {
     private int score;
     private TextView scoreDisplay;
 
+    private Context context;
+
     public ScoreSystem(TextView scoreDisplay) {
         this.scoreDisplay = scoreDisplay;
+        this.context = scoreDisplay.getContext();
+        updateScoreDisplay();
     }
 
     protected void increaseScore(int score) {
         this.score += score;
+        updateHighScore();
         updateScoreDisplay();
     }
 
     private void updateScoreDisplay() {
         ((Activity) scoreDisplay.getContext()).runOnUiThread(() -> {
-            scoreDisplay.setText(String.valueOf(score));
+            String string = "Score: " + score + "\n" +
+                    "High Score: " + getHighScore();
+            scoreDisplay.setText(string);
         });
     }
 
@@ -28,17 +35,21 @@ public class ScoreSystem {
         score = 0;
         updateScoreDisplay();
     }
-//    protected void highlightScore() {
-//        ((Activity) scoreDisplay.getContext()).runOnUiThread(() -> {
-//            scoreDisplay.setTextSize(textSize * 2);
-//            try {
-//                sleep(2000);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//            scoreDisplay.setTextSize(textSize);
-//        });
-//    }
 
+    private void updateHighScore() {
+        if (score <= getHighScore()) {
+            return;
+        }
+        SharedPreferences sharedPref =
+                context.getSharedPreferences("tetrisHighScore", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("highScoreKey", score);
+        editor.apply();
+    }
 
+    private int getHighScore() {
+        SharedPreferences sharedPref =
+                context.getSharedPreferences("tetrisHighScore", Context.MODE_PRIVATE);
+        return sharedPref.getInt("highScoreKey", 0);
+    }
 }
