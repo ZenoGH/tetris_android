@@ -47,7 +47,7 @@
                     android:layout_width="100dp"
                     android:layout_height="150dp"
                     android:layout_weight="0"
-                    android:gravity="center">
+                    android:gravity="end">
 
                 </RelativeLayout>
             </LinearLayout>
