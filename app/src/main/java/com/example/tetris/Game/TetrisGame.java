@@ -68,13 +68,13 @@ public class TetrisGame {
         TetrisShapePiece[][] newArray =
                 cutOffRows(field.getRenderedFieldArray(), fieldHeight / 5);
         FieldRenderer.renderTetrisPieceArray(newArray,
-                (float) getScreenWidth() / newArray[0].length * 0.7f);
+                dpToPx(nextShapeRenderer.getView().getContext().getApplicationContext(), 35));
     }
 
     private void renderNextShape() {
         TetrisShapePiece[][] newArray = field.getNextShape().getShapeArray();
         nextShapeRenderer.renderTetrisPieceArray(newArray,
-                dpToPx(nextShapeRenderer.getView().getContext(), 30));
+                dpToPx(nextShapeRenderer.getView().getContext().getApplicationContext(), 30));
     }
 
     public static TetrisShapePiece[][] cutOffRows(TetrisShapePiece[][] array, int n) {

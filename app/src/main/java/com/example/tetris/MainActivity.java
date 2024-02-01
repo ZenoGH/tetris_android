@@ -1,7 +1,5 @@
 package com.example.tetris;
 
-import static java.lang.Math.abs;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;

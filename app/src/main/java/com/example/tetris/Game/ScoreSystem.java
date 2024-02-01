@@ -13,7 +13,7 @@ public class ScoreSystem {
 
     public ScoreSystem(TextView scoreDisplay) {
         this.scoreDisplay = scoreDisplay;
-        this.context = scoreDisplay.getContext();
+        this.context = scoreDisplay.getContext().getApplicationContext();
         updateScoreDisplay();
     }
 
